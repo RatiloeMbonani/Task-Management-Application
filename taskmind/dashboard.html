@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TaskMind - Dashboard</title>
+  <title>TaskMind</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <link rel="stylesheet" href="styles.css"/> <!-- your teammate's file -->
+  <link rel="stylesheet" href="styles.css"/>
+
   <style>
-    /* Very basic dark mode – CSS teammate will improve */
     [data-theme="dark"] {
       background: #0f172a;
       color: #e2e8f0;
@@ -15,19 +15,43 @@
     [data-theme="dark"] .top-nav,
     [data-theme="dark"] .sidebar,
     [data-theme="dark"] .stat-card,
-    [data-theme="dark"] .column {
+    [data-theme="dark"] .column,
+    [data-theme="dark"] .task-card {
       background: #1e293b;
-    }
-    /* Hide hamburger on large screens */
-    .hamburger { display: none; }
-    @media (max-width: 1024px) {
-      .hamburger { display: block; font-size: 1.8rem; cursor: pointer; }
-      .sidebar { display: none; position: absolute; top: 64px; left: 0; width: 240px; z-index: 999; }
-      .sidebar.open { display: block; }
+      border-color: #334155;
     }
 
-    /* Basic mode-specific hiding (will be improved by CSS/JS teammate) */
     .hidden { display: none !important; }
+    .page { display: none; padding: 20px; }
+    .page.active { display: block; }
+
+    .task-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px;
+      margin: 10px 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .priority {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .priority.high { background:#fee2e2; color:#b91c1c; }
+    .priority.medium { background:#fef3c7; color:#92400e; }
+    .priority.low { background:#dcfce7; color:#15803d; }
+
+    .category-btn {
+      margin: 6px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: none;
+      background: #e2e8f0;
+      cursor: pointer;
+    }
+    .category-btn:hover { background: #cbd5e1; }
   </style>
 </head>
 <body>
@@ -35,7 +59,7 @@
   <!-- Top nav -->
   <header class="top-nav">
     <button class="hamburger" id="hamburger-btn"><i class="fas fa-bars"></i></button>
-    <div class="logo">TaskFlow</div>
+    <div class="logo">TaskMind</div>
 
     <div class="mode-switch">
       <button class="mode-btn active" data-mode="student">Student</button>
@@ -45,15 +69,7 @@
     <div class="top-right">
       <input type="search" placeholder="Search tasks..." class="search-input"/>
       <button id="theme-toggle" title="Toggle dark mode"><i class="fas fa-moon"></i></button>
-      <div class="user-menu">
-        <div class="avatar">MP</div>
-        <div class="dropdown-menu hidden">
-          <a href="#">Profile</a>
-          <a href="#">Settings</a>
-          <hr/>
-          <a href="login.html">Sign out</a>
-        </div>
-      </div>
+      <div class="avatar">MP</div>
     </div>
   </header>
 
@@ -62,187 +78,433 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
       <nav>
-        <a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="#"><i class="fas fa-list-check"></i> My Tasks</a>
-        <a href="#"><i class="fas fa-calendar-days"></i> Calendar</a>
-        <a href="#"><i class="fas fa-folder"></i> Projects</a>
-        <a href="#"><i class="fas fa-tags"></i> Labels</a>
-        <a href="#"><i class="fas fa-bell"></i> Notifications</a>
-        <a href="#"><i class="fas fa-chart-line"></i> Analytics</a>
-        <a href="#"><i class="fas fa-question-circle"></i> Help</a>
-        <a href="#"><i class="fas fa-cog"></i> Settings</a>
+        <a href="#" data-page="dashboard" class="active"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="#" data-page="mytasks"><i class="fas fa-list-check"></i> My Tasks</a>
+        <a href="#" data-page="calendar"><i class="fas fa-calendar-days"></i> Calendar</a>
+        <a href="#" data-page="projects"><i class="fas fa-folder"></i> Projects</a>
+        <a href="#" data-page="labels"><i class="fas fa-tags"></i> Labels</a>
+        <a href="#" data-page="notifications"><i class="fas fa-bell"></i> Notifications</a>
+        <a href="#" data-page="analytics"><i class="fas fa-chart-line"></i> Analytics</a>
+        <a href="#" data-page="help"><i class="fas fa-question-circle"></i> Help</a>
+        <a href="#" data-page="settings"><i class="fas fa-cog"></i> Settings</a>
       </nav>
     </aside>
 
     <!-- Main content -->
     <main class="main-content">
 
-      <!-- Mode-specific Overview Stats -->
-      <section class="overview-cards student-overview">
-        <div class="stat-card">
-          <i class="fas fa-book-open stat-icon"></i>
-          <div>
-            <div class="stat-value">5</div>
-            <div class="stat-label">Assignments Due</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <i class="fas fa-graduation-cap stat-icon"></i>
-          <div>
-            <div class="stat-value">2</div>
-            <div class="stat-label">Exams This Month</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <i class="fas fa-users stat-icon"></i>
-          <div>
-            <div class="stat-value">3</div>
-            <div class="stat-label">Group Projects</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <i class="fas fa-tasks stat-icon"></i>
-          <div>
-            <div class="stat-value">142</div>
-            <div class="stat-label">Total Tasks</div>
-          </div>
-        </div>
-      </section>
+      <!-- ============================================= -->
+      <!-- DASHBOARD PAGE -->
+      <!-- ============================================= -->
+      <div id="page-dashboard" class="page active">
 
-      <section class="overview-cards professional-overview hidden">
-        <div class="stat-card">
-          <i class="fas fa-briefcase stat-icon"></i>
-          <div>
-            <div class="stat-value">3</div>
-            <div class="stat-label">Active Clients</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <i class="fas fa-calendar-check stat-icon"></i>
-          <div>
-            <div class="stat-value">8</div>
-            <div class="stat-label">Meetings This Week</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <i class="fas fa-file-alt stat-icon"></i>
-          <div>
-            <div class="stat-value">12</div>
-            <div class="stat-label">Reports Pending</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <i class="fas fa-tasks stat-icon"></i>
-          <div>
-            <div class="stat-value">142</div>
-            <div class="stat-label">Total Tasks</div>
-          </div>
-        </div>
-      </section>
+        <!-- Student Dashboard -->
+        <div class="student-content">
+          <section class="overview-cards">
+            <div class="stat-card">
+              <i class="fas fa-book-open stat-icon"></i>
+              <div><div class="stat-value">5</div><div>Assignments Due</div></div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-graduation-cap stat-icon"></i>
+              <div><div class="stat-value">2</div><div>Exams This Month</div></div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-users stat-icon"></i>
+              <div><div class="stat-value">3</div><div>Group Projects</div></div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-tasks stat-icon"></i>
+              <div><div class="stat-value">142</div><div>Total Tasks</div></div>
+            </div>
+          </section>
 
-      <!-- Quick Categories – mode-specific -->
-      <div class="quick-categories student-categories">
-        <h3>Quick Categories</h3>
-        <div class="category-buttons">
-          <button class="category-btn">Assignments</button>
-          <button class="category-btn">Exams</button>
-          <button class="category-btn">Group Projects</button>
-          <button class="category-btn">Study Sessions</button>
+          <div class="quick-categories">
+            <h3>Quick Categories</h3>
+            <div class="category-buttons">
+              <button class="category-btn" data-page="mytasks" data-filter="assignments">Assignments</button>
+              <button class="category-btn" data-page="mytasks" data-filter="exams">Exams</button>
+              <button class="category-btn" data-page="mytasks" data-filter="group">Group Projects</button>
+              <button class="category-btn" data-page="mytasks" data-filter="study">Study Sessions</button>
+            </div>
+          </div>
+
+          <div class="actions-bar">
+            <button class="btn btn-primary" id="btn-new-task"><i class="fas fa-plus"></i> New Task</button>
+          </div>
+
+          <div class="kanban-container">
+            <div class="column"><h3>To Do</h3><div class="task-list">
+              <div class="task-card"><h4>Calculus Ch.7 exercises</h4><p>Due: 16 Mar 2026</p><span class="priority high">High</span></div>
+              <div class="task-card"><h4>Biology group presentation slides</h4><p>Due: 19 Mar 2026</p><span class="priority medium">Medium</span></div>
+              <div class="task-card"><h4>History essay draft</h4><p>Due: 22 Mar 2026</p><span class="priority high">High</span></div>
+            </div></div>
+            <div class="column"><h3>In Progress</h3><div class="task-list">
+              <div class="task-card"><h4>Physics revision – Mechanics</h4><p>Due: 25 Mar 2026</p><span class="priority medium">Medium</span></div>
+              <div class="task-card"><h4>Accounting case study research</h4><p>Due: 28 Mar 2026</p><span class="priority low">Low</span></div>
+            </div></div>
+            <div class="column"><h3>Done</h3><div class="task-list">
+              <div class="task-card"><h4>English poetry analysis submitted</h4><p>Completed 9 Mar</p><span class="priority low">Low</span></div>
+              <div class="task-card"><h4>Weekly quiz – Accounting</h4><p>Completed 11 Mar</p><span class="priority low">Low</span></div>
+            </div></div>
+          </div>
+        </div>
+
+        <!-- Professional Dashboard -->
+        <div class="professional-content hidden">
+          <section class="overview-cards">
+            <div class="stat-card">
+              <i class="fas fa-briefcase stat-icon"></i>
+              <div><div class="stat-value">4</div><div>Active Clients</div></div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-calendar-check stat-icon"></i>
+              <div><div class="stat-value">7</div><div>Meetings This Week</div></div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-file-alt stat-icon"></i>
+              <div><div class="stat-value">9</div><div>Reports Pending</div></div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-tasks stat-icon"></i>
+              <div><div class="stat-value">87</div><div>Total Tasks</div></div>
+            </div>
+          </section>
+
+          <div class="quick-categories">
+            <h3>Quick Categories</h3>
+            <div class="category-buttons">
+              <button class="category-btn" data-page="mytasks" data-filter="client">Client Work</button>
+              <button class="category-btn" data-page="mytasks" data-filter="meeting">Meetings</button>
+              <button class="category-btn" data-page="mytasks" data-filter="report">Reports</button>
+              <button class="category-btn" data-page="mytasks" data-filter="personal">Personal Development</button>
+            </div>
+          </div>
+
+          <div class="actions-bar">
+            <button class="btn btn-primary" id="btn-new-task"><i class="fas fa-plus"></i> New Task</button>
+          </div>
+
+          <div class="kanban-container">
+            <div class="column"><h3>To Do</h3><div class="task-list">
+              <div class="task-card"><h4>Prepare Q1 financial report for Client XYZ</h4><p>Due: 18 Mar 2026</p><span class="priority high">High</span></div>
+              <div class="task-card"><h4>Schedule follow-up call with Acme Corp</h4><p>Due: 20 Mar 2026</p><span class="priority medium">Medium</span></div>
+              <div class="task-card"><h4>Review marketing proposal draft</h4><p>Due: 23 Mar 2026</p><span class="priority medium">Medium</span></div>
+            </div></div>
+            <div class="column"><h3>In Progress</h3><div class="task-list">
+              <div class="task-card"><h4>Update CRM records for new leads</h4><p>Due: 22 Mar 2026</p><span class="priority high">High</span></div>
+              <div class="task-card"><h4>Finalize contract amendments</h4><p>Due: 26 Mar 2026</p><span class="priority low">Low</span></div>
+            </div></div>
+            <div class="column"><h3>Done</h3><div class="task-list">
+              <div class="task-card"><h4>Invoice sent to Client ABC</h4><p>Completed 10 Mar</p><span class="priority low">Low</span></div>
+              <div class="task-card"><h4>Team weekly status meeting notes</h4><p>Completed 12 Mar</p><span class="priority low">Low</span></div>
+            </div></div>
+          </div>
         </div>
       </div>
 
-      <div class="quick-categories professional-categories hidden">
-        <h3>Quick Categories</h3>
-        <div class="category-buttons">
-          <button class="category-btn">Client Work</button>
-          <button class="category-btn">Meetings</button>
-          <button class="category-btn">Reports</button>
-          <button class="category-btn">Personal Development</button>
+      <!-- ============================================= -->
+      <!-- MY TASKS PAGE -->
+      <!-- ============================================= -->
+      <div id="page-mytasks" class="page">
+        <h1>My Tasks</h1>
+
+        <!-- Student version -->
+        <div class="student-content">
+          <table style="width:100%; border-collapse:collapse; margin:16px 0;">
+            <thead><tr style="background:#f1f5f9;"><th>Task</th><th>Status</th><th>Priority</th><th>Due</th><th>Category</th></tr></thead>
+            <tbody>
+              <tr><td>Calculus Ch.7 exercises</td><td>To Do</td><td>High</td><td>16 Mar</td><td>Assignments</td></tr>
+              <tr><td>Physics revision – Mechanics</td><td>In Progress</td><td>Medium</td><td>25 Mar</td><td>Exams</td></tr>
+              <tr><td>History essay draft</td><td>In Progress</td><td>High</td><td>22 Mar</td><td>Assignments</td></tr>
+              <tr><td>Biology group presentation</td><td>To Do</td><td>Medium</td><td>19 Mar</td><td>Group Projects</td></tr>
+              <tr><td>Accounting quiz review</td><td>Done</td><td>Low</td><td>—</td><td>Study Sessions</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Professional version -->
+        <div class="professional-content hidden">
+          <table style="width:100%; border-collapse:collapse; margin:16px 0;">
+            <thead><tr style="background:#f1f5f9;"><th>Task</th><th>Status</th><th>Priority</th><th>Due</th><th>Category</th></tr></thead>
+            <tbody>
+              <tr><td>Q1 financial report – Client XYZ</td><td>To Do</td><td>High</td><td>18 Mar</td><td>Client Work</td></tr>
+              <tr><td>Follow-up call Acme Corp</td><td>To Do</td><td>Medium</td><td>20 Mar</td><td>Meetings</td></tr>
+              <tr><td>Marketing proposal review</td><td>In Progress</td><td>Medium</td><td>23 Mar</td><td>Client Work</td></tr>
+              <tr><td>CRM lead update</td><td>In Progress</td><td>High</td><td>22 Mar</td><td>Reports</td></tr>
+              <tr><td>Invoice Client ABC</td><td>Done</td><td>Low</td><td>—</td><td>Client Work</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <!-- Actions bar / New Task button -->
-      <div class="actions-bar">
-        <button class="btn btn-primary" id="btn-new-task">
-          <i class="fas fa-plus"></i> New Task
-        </button>
+      <!-- ============================================= -->
+      <!-- CALENDAR PAGE -->
+      <!-- ============================================= -->
+      <div id="page-calendar" class="page">
+        <h1>Calendar</h1>
+
+        <!-- Student -->
+        <div class="student-content">
+          <h3>March 2026 – Key Dates</h3>
+          <ul>
+            <li><strong>16 Mar</strong> Calculus assignment due</li>
+            <li><strong>19 Mar</strong> Group presentation</li>
+            <li><strong>22 Mar</strong> History essay deadline</li>
+            <li><strong>25 Mar</strong> Physics mid-term</li>
+            <li><strong>28 Mar</strong> Biology lab report</li>
+          </ul>
+        </div>
+
+        <!-- Professional -->
+        <div class="professional-content hidden">
+          <h3>March 2026 – Key Dates</h3>
+          <ul>
+            <li><strong>18 Mar</strong> Q1 report submission – Client XYZ</li>
+            <li><strong>20 Mar</strong> Follow-up call – Acme Corp</li>
+            <li><strong>23 Mar</strong> Marketing strategy review</li>
+            <li><strong>26 Mar</strong> Contract amendments deadline</li>
+            <li><strong>31 Mar</strong> Monthly performance review</li>
+          </ul>
+        </div>
       </div>
 
-      <!-- Kanban board (your existing content goes here) -->
-      <div class="kanban-container">
-        <!-- ... paste your existing kanban columns, task cards, etc. here ... -->
-        <!-- Example placeholder if you don't have it yet -->
-        <div class="column"><h3>To Do</h3><div class="task-list"></div></div>
-        <div class="column"><h3>In Progress</h3><div class="task-list"></div></div>
-        <div class="column"><h3>Done</h3><div class="task-list"></div></div>
+      <!-- ============================================= -->
+      <!-- PROJECTS PAGE -->
+      <!-- ============================================= -->
+      <div id="page-projects" class="page">
+        <h1>Projects</h1>
+
+        <!-- Student -->
+        <div class="student-content">
+          <div style="border:1px solid #e2e8f0; padding:16px; border-radius:8px; margin-bottom:16px;">
+            <h3>Final Year Mobile App Project</h3>
+            <p>Group • Progress: 42% • Due: 30 Apr 2026</p>
+            <div style="height:8px; background:#e2e8f0; border-radius:4px;"><div style="width:42%; height:100%; background:#3b82f6; border-radius:4px;"></div></div>
+          </div>
+          <div style="border:1px solid #e2e8f0; padding:16px; border-radius:8px;">
+            <h3>History Research Essay</h3>
+            <p>Individual • Progress: 65% • Due: 22 Mar 2026</p>
+            <div style="height:8px; background:#e2e8f0; border-radius:4px;"><div style="width:65%; height:100%; background:#eab308; border-radius:4px;"></div></div>
+          </div>
+        </div>
+
+        <!-- Professional -->
+        <div class="professional-content hidden">
+          <div style="border:1px solid #e2e8f0; padding:16px; border-radius:8px; margin-bottom:16px;">
+            <h3>Client XYZ – Q1 Reporting Dashboard</h3>
+            <p>Freelance • Progress: 55% • Due: 15 Apr 2026</p>
+            <div style="height:8px; background:#e2e8f0; border-radius:4px;"><div style="width:55%; height:100%; background:#3b82f6; border-radius:4px;"></div></div>
+          </div>
+          <div style="border:1px solid #e2e8f0; padding:16px; border-radius:8px;">
+            <h3>Acme Corp – Marketing Strategy Revamp</h3>
+            <p>Contract • Progress: 30% • Due: 10 May 2026</p>
+            <div style="height:8px; background:#e2e8f0; border-radius:4px;"><div style="width:30%; height:100%; background:#eab308; border-radius:4px;"></div></div>
+          </div>
+        </div>
       </div>
 
-      <!-- Analytics (your existing section) -->
-      <!-- ... paste your analytics here if you have it ... -->
+      <!-- ============================================= -->
+      <!-- LABELS PAGE -->
+      <!-- ============================================= -->
+      <div id="page-labels" class="page">
+        <h1>Labels / Tags</h1>
+
+        <!-- Student -->
+        <div class="student-content">
+          <span class="label-tag" style="background:#fee2e2;">Urgent</span>
+          <span class="label-tag" style="background:#dbeafe;">Assignments</span>
+          <span class="label-tag" style="background:#d1fae5;">Exams</span>
+          <span class="label-tag" style="background:#fef3c7;">Group Projects</span>
+          <span class="label-tag" style="background:#e0f2fe;">Study Sessions</span>
+          <span class="label-tag" style="background:#f3e8ff;">Reading</span>
+        </div>
+
+        <!-- Professional -->
+        <div class="professional-content hidden">
+          <span class="label-tag" style="background:#fee2e2;">Urgent</span>
+          <span class="label-tag" style="background:#dbeafe;">Client Work</span>
+          <span class="label-tag" style="background:#d1fae5;">Meetings</span>
+          <span class="label-tag" style="background:#fef3c7;">Reports</span>
+          <span class="label-tag" style="background:#e0f2fe;">Follow-up</span>
+          <span class="label-tag" style="background:#f3e8ff;">Personal Development</span>
+        </div>
+      </div>
+
+      <!-- ============================================= -->
+      <!-- NOTIFICATIONS PAGE -->
+      <!-- ============================================= -->
+      <div id="page-notifications" class="page">
+        <h1>Notifications</h1>
+
+        <!-- Student -->
+        <div class="student-content">
+          <ul style="list-style:none; padding:0;">
+            <li style="padding:12px; border-bottom:1px solid #e2e8f0;"><strong>Reminder:</strong> Calculus due in 3 days</li>
+            <li style="padding:12px; border-bottom:1px solid #e2e8f0;"><strong>Update:</strong> Group task "Slides" completed</li>
+            <li style="padding:12px; border-bottom:1px solid #e2e8f0; opacity:0.7;"><strong>Completed:</strong> Accounting quiz</li>
+          </ul>
+        </div>
+
+        <!-- Professional -->
+        <div class="professional-content hidden">
+          <ul style="list-style:none; padding:0;">
+            <li style="padding:12px; border-bottom:1px solid #e2e8f0;"><strong>Reminder:</strong> Q1 report due in 5 days</li>
+            <li style="padding:12px; border-bottom:1px solid #e2e8f0;"><strong>Client:</strong> Acme Corp replied to proposal</li>
+            <li style="padding:12px; border-bottom:1px solid #e2e8f0; opacity:0.7;"><strong>Invoice:</strong> Client ABC paid</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ============================================= -->
+      <!-- ANALYTICS PAGE -->
+      <!-- ============================================= -->
+      <div id="page-analytics" class="page">
+        <h1>Analytics</h1>
+
+        <!-- Student -->
+        <div class="student-content">
+          <p><strong>This week:</strong> 11 tasks completed • 68% on time</p>
+          <p><strong>Streak:</strong> 6 days</p>
+          <p><strong>Most productive day:</strong> Wednesday</p>
+          <div style="height:200px; background:#f1f5f9; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#64748b; margin:20px 0;">
+            [Chart placeholder – student task completion]
+          </div>
+        </div>
+
+        <!-- Professional -->
+        <div class="professional-content hidden">
+          <p><strong>This week:</strong> 14 tasks completed • 82% on time</p>
+          <p><strong>Client response rate:</strong> 91%</p>
+          <p><strong>Most meetings:</strong> Tuesday</p>
+          <div style="height:200px; background:#f1f5f9; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#64748b; margin:20px 0;">
+            [Chart placeholder – professional billable hours / tasks]
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================= -->
+      <!-- HELP PAGE -->
+      <!-- ============================================= -->
+      <div id="page-help" class="page">
+        <h1>Help & Support</h1>
+        <h3>How to add tasks</h3>
+        <p>Click "New Task" → fill details → Save.</p>
+        <h3>Switching modes</h3>
+        <p>Use the toggle in the top bar (Student ↔ Professional).</p>
+        <h3>Dark mode</h3>
+        <p>Click the moon icon top right.</p>
+      </div>
+
+      <!-- ============================================= -->
+      <!-- SETTINGS PAGE -->
+      <!-- ============================================= -->
+      <div id="page-settings" class="page">
+        <h1>Settings</h1>
+        <form style="max-width:500px; margin:24px 0;">
+          <label style="display:block; margin:12px 0;">Username <input type="text" value="Big" style="width:100%; padding:8px;"></label>
+          <label style="display:block; margin:12px 0;">Email <input type="email" value="big@example.com" style="width:100%; padding:8px;"></label>
+          <label style="display:block; margin:12px 0;">
+            Default mode
+            <select style="width:100%; padding:8px;">
+              <option>Student</option>
+              <option>Professional</option>
+            </select>
+          </label>
+          <label style="display:block; margin:12px 0;"><input type="checkbox" checked> Dark mode by default</label>
+          <button type="button" style="padding:10px 20px; background:#3b82f6; color:white; border:none; border-radius:6px;">Save Changes</button>
+        </form>
+      </div>
 
     </main>
   </div>
 
-  <!-- Paste your existing task modal / dialog here if you have one -->
-  <!-- Example placeholder modal -->
+  <!-- New Task Modal (same for both modes for simplicity) -->
   <dialog id="task-modal">
     <h2>New Task</h2>
     <form>
-      <input type="text" placeholder="Task title" required>
-      <input type="date" name="due-date">
-      <select name="priority">
-        <option>Low</option>
-        <option selected>Medium</option>
-        <option>High</option>
+      <input type="text" placeholder="Task title" required style="width:100%; padding:8px; margin:8px 0;">
+      <input type="date" required style="width:100%; padding:8px; margin:8px 0;">
+      <select style="width:100%; padding:8px; margin:8px 0;">
+        <option>Low</option><option selected>Medium</option><option>High</option>
       </select>
-      <select name="category">
-        <option>School</option>
-        <option>Work</option>
-        <option>Personal</option>
-      </select>
-      <button type="submit">Save</button>
-      <button type="button" id="close-modal">Cancel</button>
+      <div style="margin-top:16px;">
+        <button type="submit">Save</button>
+        <button type="button" id="close-modal">Cancel</button>
+      </div>
     </form>
   </dialog>
 
   <script>
+    // Mode switch (Student ↔ Professional)
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const mode = btn.dataset.mode;
+        document.body.dataset.mode = mode;
+
+        // Show/hide content based on mode
+        document.querySelectorAll('.student-content').forEach(el => el.classList.toggle('hidden', mode !== 'student'));
+        document.querySelectorAll('.professional-content').forEach(el => el.classList.toggle('hidden', mode !== 'professional'));
+      });
+    });
+
+    // Page switching (Dashboard, My Tasks, Calendar, etc.)
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const page = link.getAttribute('data-page');
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('page-' + page).classList.add('active');
+
+        document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
+
+    // Quick category buttons also switch to My Tasks with filter (placeholder alert)
+    document.querySelectorAll('.category-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const page = btn.getAttribute('data-page');
+        const filter = btn.getAttribute('data-filter');
+
+        // Switch to My Tasks page
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('page-' + page).classList.add('active');
+
+        // Highlight sidebar
+        document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+        document.querySelector('.sidebar a[data-page="' + page + '"]').classList.add('active');
+
+        // Placeholder feedback
+        alert(`Showing ${filter} tasks in My Tasks (filter coming soon)`);
+      });
+    });
+
     // Hamburger menu
     document.getElementById('hamburger-btn')?.addEventListener('click', () => {
       document.getElementById('sidebar').classList.toggle('open');
     });
 
-    // Dark mode toggle
+    // Dark mode
     document.getElementById('theme-toggle')?.addEventListener('click', () => {
       const html = document.documentElement;
-      const current = html.getAttribute('data-theme') || 'light';
-      html.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
+      html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
     });
 
-    // Mode switch – show/hide student vs professional content
-    document.querySelectorAll('.mode-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        // Update active button
-        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+    // New Task modal functionality
+    const newTaskButton = document.getElementById('btn-new-task');
+    const taskModal = document.getElementById('task-modal');
+    const closeModalButton = document.getElementById('close-modal');
 
-        // Update mode on body
-        const mode = btn.dataset.mode;
-        document.body.dataset.mode = mode;
-
-        // Show/hide mode-specific sections
-        document.querySelector('.student-overview')?.classList.toggle('hidden', mode !== 'student');
-        document.querySelector('.professional-overview')?.classList.toggle('hidden', mode !== 'professional');
-        document.querySelector('.student-categories')?.classList.toggle('hidden', mode !== 'student');
-        document.querySelector('.professional-categories')?.classList.toggle('hidden', mode !== 'professional');
-      });
+    newTaskButton?.addEventListener('click', () => {
+      taskModal.showModal();
     });
 
-    // Optional: New Task modal open/close (if you have a modal)
-    document.getElementById('btn-new-task')?.addEventListener('click', () => {
-      document.getElementById('task-modal')?.showModal();
-    });
-    document.getElementById('close-modal')?.addEventListener('click', () => {
-      document.getElementById('task-modal')?.close();
+    closeModalButton?.addEventListener('click', () => {
+      taskModal.close();
     });
   </script>
 
