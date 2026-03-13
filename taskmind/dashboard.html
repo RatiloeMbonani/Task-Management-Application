@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="student" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TaskMind - Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="styles.css"/> <!-- your teammate's file -->
+  <style>
+    /* Very basic dark mode – CSS teammate will improve */
+    [data-theme="dark"] {
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+    [data-theme="dark"] .top-nav,
+    [data-theme="dark"] .sidebar,
+    [data-theme="dark"] .stat-card,
+    [data-theme="dark"] .column {
+      background: #1e293b;
+    }
+    /* Hide hamburger on large screens */
+    .hamburger { display: none; }
+    @media (max-width: 1024px) {
+      .hamburger { display: block; font-size: 1.8rem; cursor: pointer; }
+      .sidebar { display: none; position: absolute; top: 64px; left: 0; width: 240px; z-index: 999; }
+      .sidebar.open { display: block; }
+    }
+
+    /* Basic mode-specific hiding (will be improved by CSS/JS teammate) */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <!-- Top nav -->
+  <header class="top-nav">
+    <button class="hamburger" id="hamburger-btn"><i class="fas fa-bars"></i></button>
+    <div class="logo">TaskFlow</div>
+
+    <div class="mode-switch">
+      <button class="mode-btn active" data-mode="student">Student</button>
+      <button class="mode-btn" data-mode="professional">Professional</button>
+    </div>
+
+    <div class="top-right">
+      <input type="search" placeholder="Search tasks..." class="search-input"/>
+      <button id="theme-toggle" title="Toggle dark mode"><i class="fas fa-moon"></i></button>
+      <div class="user-menu">
+        <div class="avatar">MP</div>
+        <div class="dropdown-menu hidden">
+          <a href="#">Profile</a>
+          <a href="#">Settings</a>
+          <hr/>
+          <a href="login.html">Sign out</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav>
+        <a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="#"><i class="fas fa-list-check"></i> My Tasks</a>
+        <a href="#"><i class="fas fa-calendar-days"></i> Calendar</a>
+        <a href="#"><i class="fas fa-folder"></i> Projects</a>
+        <a href="#"><i class="fas fa-tags"></i> Labels</a>
+        <a href="#"><i class="fas fa-bell"></i> Notifications</a>
+        <a href="#"><i class="fas fa-chart-line"></i> Analytics</a>
+        <a href="#"><i class="fas fa-question-circle"></i> Help</a>
+        <a href="#"><i class="fas fa-cog"></i> Settings</a>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main-content">
+
+      <!-- Mode-specific Overview Stats -->
+      <section class="overview-cards student-overview">
+        <div class="stat-card">
+          <i class="fas fa-book-open stat-icon"></i>
+          <div>
+            <div class="stat-value">5</div>
+            <div class="stat-label">Assignments Due</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-graduation-cap stat-icon"></i>
+          <div>
+            <div class="stat-value">2</div>
+            <div class="stat-label">Exams This Month</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-users stat-icon"></i>
+          <div>
+            <div class="stat-value">3</div>
+            <div class="stat-label">Group Projects</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-tasks stat-icon"></i>
+          <div>
+            <div class="stat-value">142</div>
+            <div class="stat-label">Total Tasks</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="overview-cards professional-overview hidden">
+        <div class="stat-card">
+          <i class="fas fa-briefcase stat-icon"></i>
+          <div>
+            <div class="stat-value">3</div>
+            <div class="stat-label">Active Clients</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-calendar-check stat-icon"></i>
+          <div>
+            <div class="stat-value">8</div>
+            <div class="stat-label">Meetings This Week</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-file-alt stat-icon"></i>
+          <div>
+            <div class="stat-value">12</div>
+            <div class="stat-label">Reports Pending</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-tasks stat-icon"></i>
+          <div>
+            <div class="stat-value">142</div>
+            <div class="stat-label">Total Tasks</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Categories – mode-specific -->
+      <div class="quick-categories student-categories">
+        <h3>Quick Categories</h3>
+        <div class="category-buttons">
+          <button class="category-btn">Assignments</button>
+          <button class="category-btn">Exams</button>
+          <button class="category-btn">Group Projects</button>
+          <button class="category-btn">Study Sessions</button>
+        </div>
+      </div>
+
+      <div class="quick-categories professional-categories hidden">
+        <h3>Quick Categories</h3>
+        <div class="category-buttons">
+          <button class="category-btn">Client Work</button>
+          <button class="category-btn">Meetings</button>
+          <button class="category-btn">Reports</button>
+          <button class="category-btn">Personal Development</button>
+        </div>
+      </div>
+
+      <!-- Actions bar / New Task button -->
+      <div class="actions-bar">
+        <button class="btn btn-primary" id="btn-new-task">
+          <i class="fas fa-plus"></i> New Task
+        </button>
+      </div>
+
+      <!-- Kanban board (your existing content goes here) -->
+      <div class="kanban-container">
+        <!-- ... paste your existing kanban columns, task cards, etc. here ... -->
+        <!-- Example placeholder if you don't have it yet -->
+        <div class="column"><h3>To Do</h3><div class="task-list"></div></div>
+        <div class="column"><h3>In Progress</h3><div class="task-list"></div></div>
+        <div class="column"><h3>Done</h3><div class="task-list"></div></div>
+      </div>
+
+      <!-- Analytics (your existing section) -->
+      <!-- ... paste your analytics here if you have it ... -->
+
+    </main>
+  </div>
+
+  <!-- Paste your existing task modal / dialog here if you have one -->
+  <!-- Example placeholder modal -->
+  <dialog id="task-modal">
+    <h2>New Task</h2>
+    <form>
+      <input type="text" placeholder="Task title" required>
+      <input type="date" name="due-date">
+      <select name="priority">
+        <option>Low</option>
+        <option selected>Medium</option>
+        <option>High</option>
+      </select>
+      <select name="category">
+        <option>School</option>
+        <option>Work</option>
+        <option>Personal</option>
+      </select>
+      <button type="submit">Save</button>
+      <button type="button" id="close-modal">Cancel</button>
+    </form>
+  </dialog>
+
+  <script>
+    // Hamburger menu
+    document.getElementById('hamburger-btn')?.addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('open');
+    });
+
+    // Dark mode toggle
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme') || 'light';
+      html.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
+    });
+
+    // Mode switch – show/hide student vs professional content
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Update active button
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Update mode on body
+        const mode = btn.dataset.mode;
+        document.body.dataset.mode = mode;
+
+        // Show/hide mode-specific sections
+        document.querySelector('.student-overview')?.classList.toggle('hidden', mode !== 'student');
+        document.querySelector('.professional-overview')?.classList.toggle('hidden', mode !== 'professional');
+        document.querySelector('.student-categories')?.classList.toggle('hidden', mode !== 'student');
+        document.querySelector('.professional-categories')?.classList.toggle('hidden', mode !== 'professional');
+      });
+    });
+
+    // Optional: New Task modal open/close (if you have a modal)
+    document.getElementById('btn-new-task')?.addEventListener('click', () => {
+      document.getElementById('task-modal')?.showModal();
+    });
+    document.getElementById('close-modal')?.addEventListener('click', () => {
+      document.getElementById('task-modal')?.close();
+    });
+  </script>
+
+</body>
+</html>
