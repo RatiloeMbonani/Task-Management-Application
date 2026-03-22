@@ -2,110 +2,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Task Management Application</title>
-<link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Management Application</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-
 <body>
 
-<!-- HEADER -->
-<header class="header">
+  <header class="header">
     <div class="logo">Task Mind</div>
-
     <input type="text" placeholder="Search..." class="search">
+
     <div class="header-icons">
-        <span><i class="fas fa-bell"></i></span>
-      
+      <span><i class="fas fa-bell"></i></span>
 
-       <div class="profile-container">
-  <span id="profile-icon">
-    <i class="fas fa-user-circle"></i>
-  </span>
-   <div class="dropdown-menu" id="dropdown-menu">
-    <a href="#"><i class="fas fa-cog"></i> Settings</a>
-    <a href="#"><i class="fas fa-tools"></i> Tools</a>
-    <a href="#"><i class="fas fa-question-circle"></i> Help</a>
-    <a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
-   </div>
-   </div>
+      <div class="profile-container">
+        <span id="profile-icon">
+          <i class="fas fa-user-circle"></i>
+        </span>
+
+        <div class="dropdown-menu" id="dropdown-menu">
+          <a href="#"><i class="fas fa-cog"></i> Settings</a>
+          <a href="#"><i class="fas fa-tools"></i> Tools</a>
+          <a href="#"><i class="fas fa-question-circle"></i> Help</a>
+          <a href="#" data-logout="true"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
     </div>
-</header>
+  </header>
 
-
-<!-- MAIN LAYOUT -->
-<div class="container">
-
-    <!-- SIDEBAR -->
+  <div class="container">
     <aside class="sidebar">
-        <ul>
-            <a href="dashboard.html"><li>Dashboard</li></a>
-            <a href="myTasks.html"><li>My Tasks</li></a>
-            <a href="calendar.html"><li>Calendar</li></a>
-            <a href="analytics.html"><li>Analytics</li></a>
-        </ul>
-        <button class="new-task">+ New Task</button>
+      <ul>
+        <a href="dashboard.html"><li>Dashboard</li></a>
+        <a href="myTasks.html"><li>My Tasks</li></a>
+        <a href="calendar.html"><li>Calendar</li></a>
+        <a href="analytics.html"><li>Analytics</li></a>
+      </ul>
+
+      <button class="new-task" id="add-task-btn">+ New Task</button>
     </aside>
 
-
-    <!-- MAIN CONTENT -->
     <main class="main-content">
-        <section class="overview">
-            <div class="card">
-                <h3>Total Tasks</h3>
-                <p>7</p>
-            </div>
+      <section class="overview">
+        <div class="card">
+          <h3>Total Tasks</h3>
+          <p id="totalTasks">0</p>
+        </div>
 
-            <div class="card">
-                <h3>Due Today</h3>
-                <p>4</p>
-            </div>
+        <div class="card">
+          <h3>Due Today</h3>
+          <p id="dueToday">0</p>
+        </div>
 
-            <div class="card">
-                <h3>High Priority</h3>
-                <p>3</p>
-            </div>
+        <div class="card">
+          <h3>High Priority</h3>
+          <p id="highPriority">0</p>
+        </div>
 
-            <div class="card">
-                <h3>Assigned To Me</h3>
-                <p>2</p>
-            </div>
-        </section>
+        <div class="card">
+          <h3>Assigned To Me</h3>
+          <p id="assignedToMe">0</p>
+        </div>
+      </section>
 
+      <section class="task-board">
+        <div class="column">
+          <h3>To Do</h3>
+          <div id="todoColumn"></div>
+        </div>
 
-        <!-- TASK BOARD -->
-        <section class="task-board">
-            <div class="column">
-                <h3>To Do</h3>
-                <div class="task">ADF Group Assignment</div>
-                <div class="task">MUP Quize</div>
-            </div>
+        <div class="column">
+          <h3>In Progress</h3>
+          <div id="inProgressColumn"></div>
+        </div>
 
-
-            <div class="column">
-                <h3>In Progress</h3>
-                <div class="task">Design System Figma</div>
-                <div class="task">Intership Assignment</div>
-            </div>
-
-
-            <div class="column">
-                <h3>Completed</h3>
-                <div class="task">Project Test</div>
-                <div class="task">Information System Research</div>
-            </div>
-        </section>
+        <div class="column">
+          <h3>Completed</h3>
+          <div id="completedColumn"></div>
+        </div>
+      </section>
     </main>
+  </div>
 
-
-
-</div>
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
-
 
 
 

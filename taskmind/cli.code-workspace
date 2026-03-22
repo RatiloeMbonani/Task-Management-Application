@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../../Mashego NL/cli"
+		},
+		{
+			"path": "../../../Html Css"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "cli"
+	}
+}
